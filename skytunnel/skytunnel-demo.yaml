@@ -23,6 +23,13 @@ spec:
           image: nginx:alpine
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: nginx-index-file
+              mountPath: /usr/share/nginx/html/
+      volumes:
+      - name: nginx-index-file
+        configMap:
+          name: index-html-configma
 ---
 apiVersion: v1
 kind: Service
@@ -63,3 +70,17 @@ spec:
     - hosts:
         - skytunnel.run
       secretName: letsencrypt-route53-key
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: skytunnel
+  name: index-html-configmap
+data:
+  index.html: |
+    <html>
+    <h1>Oleksii Bondarenko</h1>
+    <body>
+      Testing ArgoCD
+    </body>
+    </html>
