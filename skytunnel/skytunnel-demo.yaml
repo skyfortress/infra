@@ -29,7 +29,7 @@ spec:
       volumes:
       - name: nginx-index-file
         configMap:
-          name: index-html-configma
+          name: index-html-configmap
 ---
 apiVersion: v1
 kind: Service
