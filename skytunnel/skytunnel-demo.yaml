@@ -1,3 +1,7 @@
+apiVersion: apps/v1
+kind: Namespace
+metadata:
+  name: skytunnel
 ---
 apiVersion: apps/v1
 kind: Deployment
