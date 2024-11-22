@@ -8,6 +8,15 @@ kind: Deployment
 metadata:
   name: kitebot-deployment
   namespace: kitebot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kitebot-server
+  template:
+    metadata:
+      labels:
+        app: kitebot-server
   spec:
     containers:
       - name: kitebot-server
@@ -25,9 +34,3 @@ metadata:
                 key: OPENAI_API_KEY
           - name: TELEGRAM_BOT_NAME
             value: "@noob_kite_bot"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: kitebot-service
-  namespace: kitebot
