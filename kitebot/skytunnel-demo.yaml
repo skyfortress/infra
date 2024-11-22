@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kitebot
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kitebot-deployment
+  namespace: kitebot
+  spec:
+    containers:
+      - name: kitebot-server
+        image: ghcr.io/skyfortress/kitebot:sha256-64c0bb5411cdc356b43682b64454b64cf3321433f0ce22af309082435998e347
+        env:
+          - name: TELEGRAM_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: kitebot-secrets
+                key: TELEGRAM_TOKEN
+          - name: OPENAI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: kitebot-secrets
+                key: OPENAI_API_KEY
+          - name: TELEGRAM_BOT_NAME
+            value: "@noob_kite_bot"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kitebot-service
+  namespace: kitebot
