@@ -6,39 +6,40 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-server
+  name: skytunnel-server
   namespace: skytunnel
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test-server
+      app: skytunnel-server
   template:
     metadata:
       labels:
-        app: test-server
+        app: skytunnel-server
     spec:
       containers:
-        - name: test-server
-          image: nginx:alpine
+        - name: skytunnel-server
+          image: docker.io/skyfortress/skytunnel:latest
+          env:
+            - name: SSH_HOST_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: skytunnel-secrets
+                  key: SSH_HOST_KEY
+            - name: SSH_SERVER_PORT
+              value: "22"
           ports:
             - containerPort: 80
-          volumeMounts:
-            - name: nginx-index-file
-              mountPath: /usr/share/nginx/html/
-      volumes:
-      - name: nginx-index-file
-        configMap:
-          name: index-html-configmap
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-server
+  name: skytunnel-server
   namespace: skytunnel
 spec:
   selector:
-    app: test-server
+    app: skytunnel-server
   ports:
     - protocol: TCP
       port: 80
@@ -48,7 +49,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: test-server-ingress
+  name: skytunnel-server-ingress
   namespace: skytunnel
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
@@ -63,24 +64,10 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: test-server
+                name: skytunnel-server
                 port:
                   number: 80
   tls:
     - hosts:
         - skytunnel.run
       secretName: letsencrypt-route53-key
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: skytunnel
-  name: index-html-configmap
-data:
-  index.html: |
-    <html>
-    <h1>Oleksii Bondarenko</h1>
-    <body>
-      Testing ArgoCD
-    </body>
-    </html>
