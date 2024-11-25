@@ -1,3 +1,3 @@
 kustomize:
   images:
-  - docker.io/skyfortress/kitebot:latest@sha256:45eff9f50e8868e8e71601beedf62155dd4ab8294d6b9fe0900740760923a3b5
+  - docker.io/skyfortress/kitebot:latest@sha256:2b43c6d751b391334424c7c5501eeef74fedd9b4f62950c4accde224272bc207
