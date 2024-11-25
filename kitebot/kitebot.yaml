@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: kitebot-server
-          image: docker.io/skyfortress/kitebot:sha-5fbaf3a
+          image: docker.io/skyfortress/kitebot:latest
           env:
             - name: TELEGRAM_TOKEN
               valueFrom:
