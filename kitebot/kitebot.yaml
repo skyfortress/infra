@@ -10,6 +10,8 @@ metadata:
   namespace: kitebot
 spec:
   replicas: 1
+  strategy:
+    type: Recreate  # Ensures the old pod is deleted before creating a new one
   selector:
     matchLabels:
       app: kitebot-server
