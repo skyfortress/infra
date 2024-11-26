@@ -75,6 +75,16 @@ spec:
                 name: skytunnel-server
                 port:
                   number: 80
+    - host: "*.skytunnel.run"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: skytunnel-server
+                port:
+                  number: 80
   tls:
     - hosts:
         - skytunnel.run
