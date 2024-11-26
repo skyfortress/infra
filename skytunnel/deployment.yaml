@@ -31,6 +31,9 @@ spec:
               value: "22"
           ports:
             - containerPort: 80
+              protocol: TCP
+            - containerPort: 22
+              protocol: TCP
 ---
 apiVersion: v1
 kind: Service
