@@ -78,4 +78,5 @@ spec:
   tls:
     - hosts:
         - skytunnel.run
+        - "*.skytunnel.run"
       secretName: letsencrypt-route53-key
