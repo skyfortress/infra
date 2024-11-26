@@ -16,10 +16,10 @@ spec:
   template:
     metadata:
       labels:
-        app: skytunnel-server
+        app: skytunnel-pod
     spec:
       containers:
-        - name: skytunnel-server
+        - name: skytunnel-pod
           image: docker.io/skyfortress/skytunnel:latest
           env:
             - name: SSH_HOST_KEY
