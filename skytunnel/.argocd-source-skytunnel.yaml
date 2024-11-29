@@ -1,3 +1,0 @@
-kustomize:
-  images:
-  - docker.io/skyfortress/skytunnel:latest@sha256:63507be3d0cf1be953802e5db54e422bbbad0ab1113c57958bb58e0a6a3f7f99
