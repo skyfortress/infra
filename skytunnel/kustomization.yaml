@@ -3,7 +3,8 @@ kind: Kustomization
 resources:
   - cert-manager-clusterissuer-route53.yaml
   - deployment.yaml
+
 namespace: skytunnel
 images:
   - name: docker.io/skyfortress/skytunnel
-    newTag: 544f3aba456a792476ea5aa657edeb07cae0d11b
+    digest: sha256:544f3aba456a792476ea5aa657edeb07cae0d11b
