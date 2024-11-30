@@ -6,4 +6,4 @@ resources:
 namespace: skytunnel
 images:
   - name: docker.io/skyfortress/skytunnel
-    newTag: sha-49a2532
+    newTag: sha-36f1925
