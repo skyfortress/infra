@@ -7,4 +7,4 @@ resources:
 namespace: skytunnel
 images:
   - name: docker.io/skyfortress/skytunnel
-    digest: sha256:544f3aba456a792476ea5aa657edeb07cae0d11b
+    newTag: sha-544f3ab
