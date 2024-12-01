@@ -34,5 +34,15 @@ spec:
                 secretKeyRef:
                   name: kitebot-secrets
                   key: OPENAI_API_KEY
+            - name: MEO_LOGIN
+              valueFrom:
+                secretKeyRef:
+                  name: kitebot-secrets
+                  key: MEO_LOGIN
+            - name: MEO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kitebot-secrets
+                  key: MEO_PASSWORD
             - name: TELEGRAM_BOT_NAME
               value: "@noob_kite_bot"
