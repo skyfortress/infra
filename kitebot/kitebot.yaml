@@ -20,6 +20,13 @@ spec:
       labels:
         app: kitebot-server
     spec:
+      nodeSelector:
+        homelab: "true"
+      tolerations:
+        - key: "app"
+          operator: "Equal"
+          value: "unreliable"
+          effect: "NoSchedule"
       containers:
         - name: kitebot-server
           image: docker.io/skyfortress/kitebot:latest
