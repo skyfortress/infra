@@ -18,6 +18,8 @@ spec:
       labels:
         app: skytunnel-server
     spec:
+      nodeSelector:
+        master: "true"
       containers:
         - name: skytunnel-pod
           image: docker.io/skyfortress/skytunnel:latest
