@@ -4,4 +4,4 @@ resources:
   - kitebot.yaml # Path to your original Deployment file
 images:
   - name: docker.io/skyfortress/kitebot
-    newTag: sha-448e444
+    newTag: sha-a41cba2
