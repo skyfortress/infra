@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rabbitmq
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: rabbitmq
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 15.x
+    helm:
+      values: |
+        auth:
+          username: skychat
+          existingPasswordSecret: rabbitmq-credentials
+          existingErlangSecret: rabbitmq-credentials
+        persistence:
+          enabled: true
+          size: 8Gi
+        metrics:
+          enabled: true
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 100m
+          limits:
+            memory: 512Mi
+            cpu: 200m
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: skychat
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

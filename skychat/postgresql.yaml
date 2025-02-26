@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: postgresql
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 16.x
+    helm:
+      values: |
+        global:
+          postgresql:
+            auth:
+              username: skychat
+              existingSecret: postgresql-credentials
+              database: skychat
+        primary:
+          persistence:
+            enabled: true
+            size: 10Gi
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 200m
+        metrics:
+          enabled: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: skychat
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
