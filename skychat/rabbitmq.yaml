@@ -8,14 +8,25 @@ spec:
   source:
     chart: rabbitmq
     repoURL: registry-1.docker.io/bitnamicharts
-    targetRevision: 15.x
+    targetRevision: 14.x
     helm:
       values: |
+        auth:
+          username: skychat
+          existingPasswordSecret: rabbitmq-credentials
+          existingErlangSecret: rabbitmq-credentials
         persistence:
           enabled: true
           size: 8Gi
         metrics:
           enabled: false
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 500m
+          limits:
+            memory: 512Mi
+            cpu: 1000m
         nodeSelector:
           master: "true"
   destination:
