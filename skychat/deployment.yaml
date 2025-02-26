@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: skychat
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skychat-deployment
+  namespace: skychat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skychat-widget-server
+  template:
+    metadata:
+      labels:
+        app: skychat-widget-server
+    spec:
+      nodeSelector:
+        master: "true"
+      containers:
+        - name: skychat-widget-pod
+          image: docker.io/nginxdemos/hello:latest
+          env:
+            - name: NGINX_PORT
+              value: "80"
+          ports:
+            - containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skychat-widget-server
+  namespace: skychat
+spec:
+  selector:
+    app: skychat-widget-server
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: skychat-server-ingress
+  namespace: skychat
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-route53
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: chat.skyfortress.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: skychat-widget-server
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - chat.skyfortress.dev
+      secretName: letsencrypt-route53-key
