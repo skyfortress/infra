@@ -19,7 +19,7 @@ spec:
           enabled: true
           size: 8Gi
         metrics:
-          enabled: true
+          enabled: false
         resources:
           requests:
             memory: 256Mi
