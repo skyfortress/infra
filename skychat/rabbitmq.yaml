@@ -11,10 +11,6 @@ spec:
     targetRevision: 15.x
     helm:
       values: |
-        auth:
-          username: admin
-          existingPasswordSecret: rabbitmq-credentials
-          existingErlangSecret: rabbitmq-credentials
         persistence:
           enabled: true
           size: 8Gi
