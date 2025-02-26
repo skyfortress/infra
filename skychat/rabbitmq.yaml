@@ -27,6 +27,8 @@ spec:
           limits:
             memory: 512Mi
             cpu: 200m
+        nodeSelector:
+          master: "true"
   destination:
     server: https://kubernetes.default.svc
     namespace: skychat

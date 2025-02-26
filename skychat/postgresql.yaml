@@ -28,6 +28,8 @@ spec:
             limits:
               memory: 512Mi
               cpu: 200m
+          nodeSelector:
+            master: "true"
         metrics:
           enabled: true
   destination:
