@@ -11,10 +11,6 @@ spec:
     targetRevision: 14.x
     helm:
       values: |
-        auth:
-          username: skychat
-          existingPasswordSecret: rabbitmq-credentials
-          existingErlangSecret: rabbitmq-credentials
         persistence:
           enabled: true
           size: 8Gi
