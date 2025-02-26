@@ -22,10 +22,7 @@ spec:
         master: "true"
       containers:
         - name: skychat-widget-pod
-          image: docker.io/nginxdemos/hello:latest
-          env:
-            - name: NGINX_PORT
-              value: "80"
+          image: docker.io/skyfortress/skychat:widget-sha-d7a6a0c
           ports:
             - containerPort: 80
               protocol: TCP
