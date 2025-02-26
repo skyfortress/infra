@@ -12,7 +12,7 @@ spec:
     helm:
       values: |
         auth:
-          username: skychat
+          username: admin
           existingPasswordSecret: rabbitmq-credentials
           existingErlangSecret: rabbitmq-credentials
         persistence:
