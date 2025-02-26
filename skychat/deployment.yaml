@@ -23,6 +23,8 @@ spec:
       containers:
         - name: skychat-widget-pod
           image: docker.io/skyfortress/skychat:widget-sha-d7a6a0c
+          imagePullSecrets:
+            - name: dockerhub-secret
           ports:
             - containerPort: 80
               protocol: TCP
