@@ -6,7 +6,7 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: skychat-deployment
+  name: skychat-widget-deployment
   namespace: skychat
 spec:
   replicas: 1
@@ -47,7 +47,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: skychat-server-ingress
+  name: skychat-widget-ingress
   namespace: skychat
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
