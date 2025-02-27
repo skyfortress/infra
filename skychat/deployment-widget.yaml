@@ -24,7 +24,7 @@ spec:
         - name: dockerhub-secret
       containers:
         - name: skychat-widget-pod
-          image: docker.io/skyfortress/skychat:widget-sha-d7a6a0c
+          image: docker.io/skyfortress/skychat:widget
           ports:
             - containerPort: 80
               protocol: TCP
@@ -42,5 +42,4 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
-  type: LoadBalancer
-  loadBalancerIP: ${EXTERNAL_IP}
+  type: ClusterIP

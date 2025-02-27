@@ -11,24 +11,50 @@ resources:
   - rabbitmq.yaml
 
 configMapGenerator:
-  - name: skychat-config
+  - name: image-tags
     namespace: skychat
     literals:
-      - external_ip=38.242.216.132
+      - api=api-sha-b2ded64
+      - widget=widget-sha-f8c9e32
+      - plugin=plugin-sha-a7d4b91
 
 replacements:
   - source:
       kind: ConfigMap
-      name: skychat-config
-      fieldPath: data.external_ip
+      name: image-tags
+      fieldPath: data.api
     targets:
       - select:
-          kind: Service
-          name: skychat-widget-server
+          kind: Deployment
+          name: skychat-api-deployment
         fieldPaths:
-          - spec.loadBalancerIP
+          - spec.template.spec.containers.[name=skychat-api-pod].image
+        options:
+          delimiter: ":"
+          index: 1
+  - source:
+      kind: ConfigMap
+      name: image-tags
+      fieldPath: data.widget
+    targets:
       - select:
-          kind: Service
-          name: skychat-plugin-server
+          kind: Deployment
+          name: skychat-widget-deployment
         fieldPaths:
-          - spec.loadBalancerIP
+          - spec.template.spec.containers.[name=skychat-widget-pod].image
+        options:
+          delimiter: ":"
+          index: 1
+  - source:
+      kind: ConfigMap
+      name: image-tags
+      fieldPath: data.plugin
+    targets:
+      - select:
+          kind: Deployment
+          name: skychat-plugin-deployment
+        fieldPaths:
+          - spec.template.spec.containers.[name=skychat-plugin-pod].image
+        options:
+          delimiter: ":"
+          index: 1
