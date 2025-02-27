@@ -66,4 +66,4 @@ spec:
   tls:
     - hosts:
         - chat-plugin.skyfortress.dev
-      secretName: letsencrypt-route53-key
+      secretName: chat-plugin-letsencrypt-key
