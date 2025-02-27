@@ -1,34 +1,67 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rabbitmq-data
+  namespace: skychat
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+---
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: rabbitmq
-  namespace: argocd
+  namespace: skychat
 spec:
-  project: default
-  source:
-    chart: rabbitmq
-    repoURL: registry-1.docker.io/bitnamicharts
-    targetRevision: 14.x
-    helm:
-      values: |
-        persistence:
-          enabled: true
-          size: 8Gi
-        metrics:
-          enabled: false
-        resources:
-          requests:
-            memory: 256Mi
-            cpu: 500m
-          limits:
-            memory: 512Mi
-            cpu: 1000m
-        nodeSelector:
-          master: "true"
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: skychat
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      nodeSelector:
+        master: "true"
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:4-management-alpine
+          envFrom:
+            - secretRef:
+                name: rabbitmq-credentials
+          ports:
+            - containerPort: 5672
+              name: amqp
+            - containerPort: 15672
+              name: management
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/rabbitmq
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: rabbitmq-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  namespace: skychat
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - name: amqp
+      port: 5672
+      targetPort: 5672
