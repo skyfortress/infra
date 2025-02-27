@@ -15,8 +15,8 @@ configMapGenerator:
     namespace: skychat
     literals:
       - api=api-sha-b2ded64
-      - widget=widget-sha-f8c9e32
-      - plugin=plugin-sha-a7d4b91
+      - widget=widget-sha-d7a6a0c
+      - plugin=plugin-sha-c5fb994
 
 replacements:
   - source:
