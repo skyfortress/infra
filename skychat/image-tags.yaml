@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: image-tags
+  namespace: skychat
+data:
+  api: api-sha-b2ded64
+  widget: widget-sha-d7a6a0c
+  plugin: plugin-sha-c5fb994

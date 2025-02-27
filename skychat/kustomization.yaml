@@ -9,14 +9,7 @@ resources:
   - postgresql.yaml
   - qdrant.yaml
   - rabbitmq.yaml
-
-configMapGenerator:
-  - name: image-tags
-    namespace: skychat
-    literals:
-      - api=api-sha-b2ded64
-      - widget=widget-sha-d7a6a0c
-      - plugin=plugin-sha-c5fb994
+  - image-tags.yaml
 
 replacements:
   - source:
