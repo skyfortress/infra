@@ -2,11 +2,13 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - namespace.yaml
   - deployment-api.yaml
   - deployment-widget.yaml
   - deployment-plugin.yaml
   - ingress.yaml
+  - postgresql.yaml
+  - qdrant.yaml
+  - rabbitmq.yaml
 
 configMapGenerator:
   - name: skychat-config
@@ -14,11 +16,19 @@ configMapGenerator:
     literals:
       - external_ip=38.242.216.132
 
-vars:
-  - name: EXTERNAL_IP
-    objref:
+replacements:
+  - source:
       kind: ConfigMap
       name: skychat-config
-      apiVersion: v1
-    fieldref:
-      fieldpath: data.external_ip
+      fieldPath: data.external_ip
+    targets:
+      - select:
+          kind: Service
+          name: skychat-widget-server
+        fieldPaths:
+          - spec.loadBalancerIP
+      - select:
+          kind: Service
+          name: skychat-plugin-server
+        fieldPaths:
+          - spec.loadBalancerIP
