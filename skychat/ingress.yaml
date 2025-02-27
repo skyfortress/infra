@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: skychat-ingress
+  namespace: skychat
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-route53
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: chat.skyfortress.dev
+      http:
+        paths:
+          - path: /api/
+            pathType: Prefix
+            backend:
+              service:
+                name: skychat-api-server
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: skychat-widget-server
+                port:
+                  number: 80
+    - host: chat-plugin.skyfortress.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: skychat-plugin-server
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - chat.skyfortress.dev
+        - chat-plugin.skyfortress.dev
+      secretName: chat-letsencrypt-key

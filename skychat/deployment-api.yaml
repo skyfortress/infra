@@ -1,45 +1,43 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: skychat
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: skychat-widget-deployment
+  name: skychat-api-deployment
   namespace: skychat
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: skychat-widget-server
+      app: skychat-api-server
   template:
     metadata:
       labels:
-        app: skychat-widget-server
+        app: skychat-api-server
     spec:
       nodeSelector:
         master: "true"
       imagePullSecrets:
         - name: dockerhub-secret
       containers:
-        - name: skychat-widget-pod
-          image: docker.io/skyfortress/skychat:widget-sha-d7a6a0c
+        - name: skychat-api-pod
+          image: docker.io/skyfortress/skychat:api-sha-101e6b8
+          envFrom:
+            - secretRef:
+                name: skychat-api-secrets
           ports:
-            - containerPort: 80
+            - containerPort: 3000
               protocol: TCP
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: skychat-widget-server
+  name: skychat-api-server
   namespace: skychat
 spec:
   selector:
-    app: skychat-widget-server
+    app: skychat-api-server
   ports:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 3000
   type: LoadBalancer

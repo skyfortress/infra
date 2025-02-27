@@ -41,29 +41,3 @@ spec:
       port: 80
       targetPort: 3000
   type: LoadBalancer
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: skychat-plugin-ingress
-  namespace: skychat
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-route53
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: chat-plugin.skyfortress.dev
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: skychat-plugin-server
-                port:
-                  number: 80
-  tls:
-    - hosts:
-        - chat-plugin.skyfortress.dev
-      secretName: chat-plugin-letsencrypt-key
