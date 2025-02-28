@@ -27,7 +27,7 @@ spec:
         
         nodeSelector:
           master: "true"
-        
+        apiKey: true
         metrics:
           enabled: false
           serviceMonitor:
