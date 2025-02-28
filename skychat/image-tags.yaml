@@ -4,6 +4,6 @@ metadata:
   name: image-tags
   namespace: skychat
 data:
-  api: api-sha-1d8a3a4
+  api: api-sha-69256bd
   widget: widget-sha-a918915
   plugin: plugin-sha-b5a573e
