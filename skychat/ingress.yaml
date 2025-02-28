@@ -6,12 +6,19 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: letsencrypt-route53
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    nginx.ingress.kubernetes.io/websocket-services: "skychat-api-server"
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
-    nginx.ingress.kubernetes.io/connection-upgrade: "true"
-    nginx.ingress.kubernetes.io/enable-websocket: "true"
+    kubernetes.io/proxy-read-timeout: "3600"
+    kubernetes.io/proxy-send-timeout: "3600"
+    kubernetes.io/server-snippets: |
+      location / {
+        proxysetheader Upgrade $httpupgrade;         # upgrade header demands upgrade on the same tcp conn.
+        proxyhttpversion 1.1;
+        proxysetheader X-Forwarded-Host $httphost;
+        proxysetheader X-Forwarded-Proto $scheme;
+        proxysetheader X-Forwarded-For $remoteaddr;
+        proxysetheader Host $host;
+        proxysetheader Connection "upgrade";
+        proxycachebypass $httpupgrade;
+      }
 spec:
   ingressClassName: nginx
   rules:
