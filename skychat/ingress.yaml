@@ -8,14 +8,13 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-route53
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    nginx.org/websocket-services: "skychat-api-server"
 spec:
   ingressClassName: nginx
   rules:
     - host: chat.skyfortress.dev
       http:
         paths:
-          - path: /api/
+          - path: /api
             pathType: Prefix
             backend:
               service:
