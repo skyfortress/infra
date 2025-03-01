@@ -22,7 +22,7 @@ spec:
                 name: skychat-api-server
                 port:
                   number: 80
-          - path: /graphql/
+          - path: /graphql
             pathType: Prefix
             backend:
               service:
