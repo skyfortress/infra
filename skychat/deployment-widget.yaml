@@ -9,6 +9,11 @@ metadata:
   name: skychat-widget-deployment
   namespace: skychat
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   replicas: 1
   selector:
     matchLabels:
