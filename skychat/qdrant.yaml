@@ -27,7 +27,10 @@ spec:
         
         nodeSelector:
           master: "true"
-        apiKey: true
+        apiKey: 
+          secretKeyRef:
+            name: qdrant-apikey
+            key: api-key
         metrics:
           enabled: false
           serviceMonitor:
