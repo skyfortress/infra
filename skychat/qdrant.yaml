@@ -27,6 +27,7 @@ spec:
         
         nodeSelector:
           master: "true"
+        readOnlyApiKey: false
         apiKey:
           valueFrom:
             secretKeyRef:
