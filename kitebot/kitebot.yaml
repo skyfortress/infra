@@ -135,3 +135,16 @@ spec:
         - name: images-storage
           persistentVolumeClaim:
             claimName: kitebot-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: kitebot
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - port: 27017
+      targetPort: 27017
+  clusterIP: None  # Headless service for StatefulSet
