@@ -105,7 +105,10 @@ spec:
           image: docker.io/skyfortress/kitebot:latest
           env:
             - name: MONGODB_DSN
-              value: "mongodb://root:root@mongodb.kitebot.svc.cluster.local:27017/admin"
+              valueFrom:
+                secretKeyRef:
+                  name: kitebot-secrets
+                  key: MONGODB_DSN
             - name: TELEGRAM_TOKEN
               valueFrom:
                 secretKeyRef:
