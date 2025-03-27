@@ -20,9 +20,10 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: kitebot-pvc3
+  name: kitebot-pvc4
   namespace: kitebot
 spec:
+  storageClassName: ""
   accessModes:
     - ReadWriteOnce
   resources:
@@ -141,7 +142,7 @@ spec:
       volumes:
         - name: images-storage
           persistentVolumeClaim:
-            claimName: kitebot-pvc3
+            claimName: kitebot-pvc4
 ---
 apiVersion: v1
 kind: Service
