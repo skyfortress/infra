@@ -137,7 +137,7 @@ spec:
             - name: TELEGRAM_BOT_NAME
               value: "@noob_kite_bot"
           volumeMounts:
-            - mountPath: /images
+            - mountPath: /usr/src/web/images
               name: images-storage
       volumes:
         - name: images-storage
