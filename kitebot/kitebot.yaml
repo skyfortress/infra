@@ -8,13 +8,15 @@ kind: PersistentVolume
 metadata:
   name: kitebot-pv
   namespace: kitebot
+  labels:
+    app: kitebot
 spec:
   capacity:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /mnt/data/kitebot
+    path: /home/ubuntu/kitebot/data
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -27,6 +29,9 @@ spec:
   resources:
     requests:
       storage: 10Gi
+  selector:
+    matchLabels:
+      app: kitebot
 ---
 apiVersion: apps/v1
 kind: StatefulSet
