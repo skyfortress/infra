@@ -5,5 +5,5 @@ metadata:
   namespace: skychat
 data:
   api: api-sha-c62efb9
-  widget: widget-sha-1455f15
+  widget: widget-sha-17cfc1d
   plugin: plugin-sha-be8c997
