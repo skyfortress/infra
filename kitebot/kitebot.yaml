@@ -108,34 +108,9 @@ spec:
       containers:
         - name: kitebot-server
           image: docker.io/skyfortress/kitebot:latest
-          env:
-            - name: MONGODB_DSN
-              valueFrom:
-                secretKeyRef:
-                  name: kitebot-secrets
-                  key: MONGODB_DSN
-            - name: TELEGRAM_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: kitebot-secrets
-                  key: TELEGRAM_TOKEN
-            - name: OPENAI_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: kitebot-secrets
-                  key: OPENAI_API_KEY
-            - name: MEO_LOGIN
-              valueFrom:
-                secretKeyRef:
-                  name: kitebot-secrets
-                  key: MEO_LOGIN
-            - name: MEO_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: kitebot-secrets
-                  key: MEO_PASSWORD
-            - name: TELEGRAM_BOT_NAME
-              value: "@noob_kite_bot"
+          envFrom:
+            - secretRef:
+                name: kitebot-secrets
           volumeMounts:
             - mountPath: /usr/src/web/images
               name: images-storage
