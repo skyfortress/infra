@@ -23,6 +23,9 @@ spec:
       containers:
         - name: logic-pod
           image: docker.io/skyfortress/logic:latest
+          envFrom:
+            - secretRef:
+                name: logic-secrets
           ports:
             - containerPort: 3000
               protocol: TCP
