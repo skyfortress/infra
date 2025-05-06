@@ -5,4 +5,4 @@ resources:
 namespace: logic
 images:
   - name: docker.io/skyfortress/logic
-    newTag: sha-2608a16
+    newTag: sha-85e5792
