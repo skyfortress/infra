@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: langy
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: langy-deployment
+  namespace: langy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: langy-server
+  template:
+    metadata:
+      labels:
+        app: langy-server
+    spec:
+      nodeSelector:
+        master: "true"
+      containers:
+        - name: langy-pod
+          image: docker.io/skyfortress/langy:latest
+          envFrom:
+            - secretRef:
+                name: langy-secrets
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: langy-server
+  namespace: langy
+spec:
+  selector:
+    app: langy-server
+  ports:
+    - name: http
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: langy-server-ingress
+  namespace: langy
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-route53
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: cards.skyfortress.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: langy-server
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - cards.skyfortress.dev
+      secretName: letsencrypt-route53-key
