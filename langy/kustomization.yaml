@@ -5,4 +5,4 @@ resources:
 namespace: langy
 images:
   - name: docker.io/skyfortress/langy
-    newTag: sha-ae900bb
+    newTag: sha-7cfd4ac
