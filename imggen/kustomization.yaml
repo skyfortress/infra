@@ -5,4 +5,4 @@ resources:
 namespace: imggen
 images:
   - name: docker.io/skyfortress/generator
-    newTag: sha-d72e09b
+    newTag: sha-890da25
