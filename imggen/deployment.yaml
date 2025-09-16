@@ -23,6 +23,9 @@ spec:
       containers:
         - name: imggen-pod
           image: docker.io/skyfortress/generator:latest
+          envFrom:
+            - secretRef:
+                name: generator-secrets
           ports:
             - containerPort: 3000
               protocol: TCP
