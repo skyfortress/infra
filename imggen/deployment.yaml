@@ -29,6 +29,21 @@ spec:
           ports:
             - containerPort: 3000
               protocol: TCP
+        - name: imggen-api-pod
+          image: docker.io/skyfortress/generator:latest
+          envFrom:
+            - secretRef:
+                name: generator-api-secrets
+          ports:
+            - containerPort: 4000
+              protocol: TCP
+          volumeMounts:
+            - name: images-volume
+              mountPath: /usr/src/web/images
+      volumes:
+        - name: images-volume
+          persistentVolumeClaim:
+            claimName: imggen-images-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -43,6 +58,10 @@ spec:
       protocol: TCP
       port: 3000
       targetPort: 3000
+    - name: api
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
   type: LoadBalancer
 ---
 apiVersion: networking.k8s.io/v1
@@ -59,6 +78,13 @@ spec:
     - host: generator.skyfortress.dev
       http:
         paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: imggen-server
+                port:
+                  number: 4000
           - path: /
             pathType: Prefix
             backend:
@@ -70,3 +96,15 @@ spec:
     - hosts:
         - generator.skyfortress.dev
       secretName: letsencrypt-route53-key
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: imggen-images-pvc
+  namespace: imggen
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi

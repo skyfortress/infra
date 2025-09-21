@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: image-tags
+  namespace: imggen
+data:
+  api: latest
+  frontend: sha-40fcb38
