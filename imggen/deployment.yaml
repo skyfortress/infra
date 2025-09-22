@@ -123,11 +123,11 @@ spec:
   ports:
     - name: http
       protocol: TCP
-      port: 3000
+      port: 3001
       targetPort: 3000
     - name: api
       protocol: TCP
-      port: 4000
+      port: 4001
       targetPort: 4000
   type: LoadBalancer
 ---
@@ -168,14 +168,14 @@ spec:
               service:
                 name: imggen-nsfw-server
                 port:
-                  number: 4000
+                  number: 4001
           - path: /
             pathType: Prefix
             backend:
               service:
                 name: imggen-nsfw-server
                 port:
-                  number: 3000
+                  number: 3001
   tls:
     - hosts:
         - generator.skyfortress.dev
