@@ -32,3 +32,29 @@ replacements:
         options:
           delimiter: ":"
           index: 1
+  - source:
+      kind: ConfigMap
+      name: image-tags
+      fieldPath: data.api
+    targets:
+      - select:
+          kind: Deployment
+          name: imggen-nswf-deployment
+        fieldPaths:
+          - spec.template.spec.containers.[name=imggen-nsfw-api-pod].image
+        options:
+          delimiter: ":"
+          index: 1
+  - source:
+      kind: ConfigMap
+      name: image-tags
+      fieldPath: data.frontend
+    targets:
+      - select:
+          kind: Deployment
+          name: imggen-nswf-deployment
+        fieldPaths:
+          - spec.template.spec.containers.[name=imggen-nswf-pod].image
+        options:
+          delimiter: ":"
+          index: 1
