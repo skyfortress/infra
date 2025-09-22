@@ -45,6 +45,54 @@ spec:
           persistentVolumeClaim:
             claimName: imggen-images-pvc
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imggen-nsfw-deployment
+  namespace: imggen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imggen-nsfw-server
+  template:
+    metadata:
+      labels:
+        app: imggen-nsfw-server
+    spec:
+      nodeSelector:
+        master: "true"
+      containers:
+        - name: imggen-nsfw-pod
+          image: docker.io/skyfortress/generator:latest
+          env:
+            - name: IS_NSFW
+              value: "true"
+          envFrom:
+            - secretRef:
+                name: generator-secrets
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+        - name: imggen-nsfw-api-pod
+          image: docker.io/skyfortress/generator:latest
+          env:
+            - name: IS_NSFW
+              value: "true"
+          envFrom:
+            - secretRef:
+                name: generator-api-secrets
+          ports:
+            - containerPort: 4000
+              protocol: TCP
+          volumeMounts:
+            - name: images-nsfw-volume
+              mountPath: /usr/src/web/images
+      volumes:
+        - name: images-nsfw-volume
+          persistentVolumeClaim:
+            claimName: imggen-nsfw-images-pvc
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -64,6 +112,25 @@ spec:
       targetPort: 4000
   type: LoadBalancer
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: imggen-nsfw-server
+  namespace: imggen
+spec:
+  selector:
+    app: imggen-nsfw-server
+  ports:
+    - name: http
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+    - name: api
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
+  type: LoadBalancer
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -71,7 +138,7 @@ metadata:
   namespace: imggen
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-route53
+    cert-manager.io/cluster-issuer: letsencrypt-cloudflare
 spec:
   ingressClassName: nginx
   rules:
@@ -92,15 +159,45 @@ spec:
                 name: imggen-server
                 port:
                   number: 3000
+    - host: unrestricted.skyfortress.dev
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: imggen-nsfw-server
+                port:
+                  number: 4000
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: imggen-nsfw-server
+                port:
+                  number: 3000
   tls:
     - hosts:
         - generator.skyfortress.dev
-      secretName: letsencrypt-route53-key
+        - unrestricted.skyfortress.dev
+      secretName: letsencrypt-cloudflare-key
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: imggen-images-pvc
+  namespace: imggen
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: imggen-nsfw-images-pvc
   namespace: imggen
 spec:
   accessModes:
