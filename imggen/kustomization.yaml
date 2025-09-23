@@ -39,7 +39,7 @@ replacements:
     targets:
       - select:
           kind: Deployment
-          name: imggen-nswf-deployment
+          name: imggen-nsfw-deployment
         fieldPaths:
           - spec.template.spec.containers.[name=imggen-nsfw-api-pod].image
         options:
@@ -52,9 +52,9 @@ replacements:
     targets:
       - select:
           kind: Deployment
-          name: imggen-nswf-deployment
+          name: imggen-nsfw-deployment
         fieldPaths:
-          - spec.template.spec.containers.[name=imggen-nswf-pod].image
+          - spec.template.spec.containers.[name=imggen-nsfw-pod].image
         options:
           delimiter: ":"
           index: 1
