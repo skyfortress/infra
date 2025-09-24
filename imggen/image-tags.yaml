@@ -4,5 +4,5 @@ metadata:
   name: image-tags
   namespace: imggen
 data:
-  api: api-sha-9673aa1
+  api: api-sha-6d253a3
   frontend: sha-cf4b2d4
