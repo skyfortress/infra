@@ -142,6 +142,23 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
+    - host: skyfortress.dev
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: imggen-server
+                port:
+                  number: 4000
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: imggen-server
+                port:
+                  number: 3000
     - host: generator.skyfortress.dev
       http:
         paths:
@@ -178,6 +195,7 @@ spec:
                   number: 3001
   tls:
     - hosts:
+        - skyfortress.dev
         - generator.skyfortress.dev
         - unrestricted.skyfortress.dev
       secretName: letsencrypt-cloudflare-key
