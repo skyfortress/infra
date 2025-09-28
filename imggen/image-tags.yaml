@@ -5,4 +5,4 @@ metadata:
   namespace: imggen
 data:
   api: api-sha-3569b48
-  frontend: sha-032d8bf
+  frontend: sha-ffc18a9
