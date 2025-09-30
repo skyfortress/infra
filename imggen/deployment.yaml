@@ -31,6 +31,9 @@ spec:
               protocol: TCP
         - name: imggen-api-pod
           image: docker.io/skyfortress/generator:latest
+          env:
+            - name: GENERATION_LIMIT
+              value: "50"
           envFrom:
             - secretRef:
                 name: generator-api-secrets
@@ -79,6 +82,8 @@ spec:
           env:
             - name: IS_NSFW
               value: "true"
+            - name: GENERATION_LIMIT
+              value: "20"
           envFrom:
             - secretRef:
                 name: generator-api-secrets
