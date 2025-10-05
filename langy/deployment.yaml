@@ -36,6 +36,8 @@ metadata:
   name: langy-server
   namespace: langy
 spec:
+  nodeSelector:
+    homelab: "true"
   selector:
     app: langy-server
   ports:
