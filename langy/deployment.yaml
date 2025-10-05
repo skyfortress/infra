@@ -19,7 +19,7 @@ spec:
         app: langy-server
     spec:
       nodeSelector:
-        master: "true"
+        homelab: "true"
       containers:
         - name: langy-pod
           image: docker.io/skyfortress/langy:latest
@@ -36,8 +36,6 @@ metadata:
   name: langy-server
   namespace: langy
 spec:
-  nodeSelector:
-    homelab: "true"
   selector:
     app: langy-server
   ports:
