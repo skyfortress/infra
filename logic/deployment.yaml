@@ -19,7 +19,7 @@ spec:
         app: logic-server
     spec:
       nodeSelector:
-        master: "true"
+        homelab: "true"
       containers:
         - name: logic-pod
           image: docker.io/skyfortress/logic:latest
