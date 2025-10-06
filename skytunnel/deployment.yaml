@@ -19,7 +19,7 @@ spec:
         app: skytunnel-server
     spec:
       nodeSelector:
-        master: "true"
+        homelab: "true"
       containers:
         - name: skytunnel-pod
           image: docker.io/skyfortress/skytunnel:latest
