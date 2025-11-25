@@ -19,7 +19,7 @@ spec:
         app: imggen-server
     spec:
       nodeSelector:
-        master: "true"
+        homelab: "true"
       containers:
         - name: imggen-pod
           image: docker.io/skyfortress/generator:latest
@@ -64,7 +64,7 @@ spec:
         app: imggen-nsfw-server
     spec:
       nodeSelector:
-        master: "true"
+        homelab: "true"
       containers:
         - name: imggen-nsfw-pod
           image: docker.io/skyfortress/generator:latest
