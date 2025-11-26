@@ -29,7 +29,7 @@ spec:
               memory: 512Mi
               cpu: 200m
           nodeSelector:
-            homelab: "true"
+            master: "true"
         metrics:
           enabled: true
   destination:
