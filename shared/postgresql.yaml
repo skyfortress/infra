@@ -22,7 +22,7 @@ spec:
             enabled: true
             size: 10Gi
           nodeSelector:
-            homelab:: "true"
+            homelab: "true"
         metrics:
           enabled: true
   destination:
