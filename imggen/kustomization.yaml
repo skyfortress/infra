@@ -58,3 +58,16 @@ replacements:
         options:
           delimiter: ":"
           index: 1
+  - source:
+      kind: ConfigMap
+      name: image-tags
+      fieldPath: data.nsfw_detector
+    targets:
+      - select:
+          kind: Deployment
+          name: nsfw-detector-deployment
+        fieldPaths:
+          - spec.template.spec.containers.[name=nsfw-detector-pod].image
+        options:
+          delimiter: ":"
+          index: 1

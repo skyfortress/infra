@@ -6,3 +6,4 @@ metadata:
 data:
   api: api-sha-1414eb0
   frontend: sha-a360e3e
+  nsfw_detector: nsfw-detector-sha-latest
