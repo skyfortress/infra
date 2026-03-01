@@ -34,6 +34,10 @@ spec:
           env:
             - name: GENERATION_LIMIT
               value: "50"
+            - name: FRONTEND_URL
+              value: "https://skyfortress.dev"
+            - name: GOOGLE_CALLBACK_URL
+              value: "https://skyfortress.dev/api/auth/google/callback"
           envFrom:
             - secretRef:
                 name: generator-api-secrets
@@ -84,6 +88,10 @@ spec:
               value: "true"
             - name: GENERATION_LIMIT
               value: "20"
+            - name: FRONTEND_URL
+              value: "https://unrestricted.skyfortress.dev"
+            - name: GOOGLE_CALLBACK_URL
+              value: "https://unrestricted.skyfortress.dev/api/auth/google/callback"
           envFrom:
             - secretRef:
                 name: generator-api-secrets
