@@ -4,6 +4,6 @@ metadata:
   name: image-tags
   namespace: imggen
 data:
-  api: api-sha-e728c7d
+  api: api-sha-8c81951
   frontend: sha-cbbca85
   nsfw_detector: nsfw-detector-sha-c9ead41
