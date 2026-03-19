@@ -87,7 +87,7 @@ spec:
             - name: IS_NSFW
               value: "true"
             - name: GENERATION_LIMIT
-              value: "20"
+              value: "10"
             - name: FRONTEND_URL
               value: "https://unrestricted.skyfortress.dev"
             - name: GOOGLE_CALLBACK_URL
