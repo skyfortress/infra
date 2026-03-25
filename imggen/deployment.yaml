@@ -55,60 +55,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: imggen-nsfw-deployment
-  namespace: imggen
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: imggen-nsfw-server
-  template:
-    metadata:
-      labels:
-        app: imggen-nsfw-server
-    spec:
-      nodeSelector:
-        homelab: "true"
-      containers:
-        - name: imggen-nsfw-pod
-          image: docker.io/skyfortress/generator:latest
-          env:
-            - name: IS_NSFW
-              value: "true"
-          envFrom:
-            - secretRef:
-                name: generator-secrets
-          ports:
-            - containerPort: 3000
-              protocol: TCP
-        - name: imggen-nsfw-api-pod
-          image: docker.io/skyfortress/generator:latest
-          env:
-            - name: IS_NSFW
-              value: "true"
-            - name: GENERATION_LIMIT
-              value: "10"
-            - name: FRONTEND_URL
-              value: "https://unrestricted.skyfortress.dev"
-            - name: GOOGLE_CALLBACK_URL
-              value: "https://unrestricted.skyfortress.dev/api/auth/google/callback"
-          envFrom:
-            - secretRef:
-                name: generator-api-secrets
-          ports:
-            - containerPort: 4000
-              protocol: TCP
-          volumeMounts:
-            - name: images-nsfw-volume
-              mountPath: /usr/src/web/images
-      volumes:
-        - name: images-nsfw-volume
-          persistentVolumeClaim:
-            claimName: imggen-nsfw-images-pvc
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: nsfw-detector-deployment
   namespace: imggen
 spec:
@@ -169,25 +115,6 @@ spec:
       targetPort: 4000
   type: LoadBalancer
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: imggen-nsfw-server
-  namespace: imggen
-spec:
-  selector:
-    app: imggen-nsfw-server
-  ports:
-    - name: http
-      protocol: TCP
-      port: 3001
-      targetPort: 3000
-    - name: api
-      protocol: TCP
-      port: 4001
-      targetPort: 4000
-  type: LoadBalancer
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -233,23 +160,6 @@ spec:
                 name: imggen-server
                 port:
                   number: 3000
-    - host: unrestricted.skyfortress.dev
-      http:
-        paths:
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: imggen-nsfw-server
-                port:
-                  number: 4001
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: imggen-nsfw-server
-                port:
-                  number: 3001
   tls:
     - hosts:
         - skyfortress.dev
