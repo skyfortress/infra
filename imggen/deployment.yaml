@@ -50,7 +50,7 @@ spec:
       volumes:
         - name: images-volume
           persistentVolumeClaim:
-            claimName: imggen-images-pvc
+            claimName: imggen-images-pvc-new
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -170,7 +170,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: imggen-images-pvc
+  name: imggen-images-pvc-new
   namespace: imggen
 spec:
   accessModes:
