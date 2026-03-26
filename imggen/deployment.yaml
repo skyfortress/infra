@@ -33,7 +33,7 @@ spec:
           image: docker.io/skyfortress/generator:latest
           env:
             - name: GENERATION_LIMIT
-              value: "50"
+              value: "20"
             - name: FRONTEND_URL
               value: "https://skyfortress.dev"
             - name: GOOGLE_CALLBACK_URL
