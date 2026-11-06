@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: olx
+resources:
+  - storage.yaml
+  - collector.yaml
+  - web.yaml
+  - backup.yaml
+# Secret olx-db (DATABASE_URL) is created out of band, see skyfortress/olx-moto README.
+# Image is built locally and loaded into containerd by olx-moto/deploy/deploy.sh (no registry).
+images:
+  - name: localhost/olx-moto
+    newTag: 3f155bf

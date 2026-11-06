@@ -1,0 +1,45 @@
+# Daily dump of the olx database to the host disk, keeping the last 14.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: olx-db-backup
+spec:
+  schedule: "30 4 * * *"
+  timeZone: Europe/Lisbon
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          nodeSelector:
+            homelab: "true"
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+          containers:
+            - name: dump
+              image: postgres:18
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -e
+                  f=/backups/olx-$(date +%Y%m%d-%H%M).dump
+                  pg_dump --format=custom --dbname="$DATABASE_URL" --file="$f.part"
+                  mv "$f.part" "$f"
+                  ls -1t /backups/olx-*.dump | tail -n +15 | xargs -r rm --
+                  ls -lh /backups
+              envFrom:
+                - secretRef:
+                    name: olx-db
+              volumeMounts:
+                - name: backups
+                  mountPath: /backups
+          volumes:
+            - name: backups
+              hostPath:
+                path: /srv/olx-moto/backups
+                type: DirectoryOrCreate

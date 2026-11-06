@@ -1,0 +1,50 @@
+# LAN catalog on http://192.168.1.81:8787 (hostPort; port allowlisted in the host firewall).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: olx-web
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: olx-web
+  template:
+    metadata:
+      labels:
+        app: olx-web
+    spec:
+      nodeSelector:
+        homelab: "true"
+      securityContext:
+        runAsUser: 10001
+        runAsGroup: 10001
+      containers:
+        - name: web
+          image: localhost/olx-moto
+          imagePullPolicy: Never
+          args: ["web", "--port", "8787"]
+          ports:
+            - containerPort: 8787
+              hostPort: 8787
+          envFrom:
+            - secretRef:
+                name: olx-db
+          env:
+            - name: PHOTO_DIR
+              value: /data/photos
+          readinessProbe:
+            httpGet: { path: /health, port: 8787 }
+            periodSeconds: 30
+          resources:
+            requests: { cpu: 50m, memory: 128Mi }
+            limits: { memory: 512Mi }
+          volumeMounts:
+            - name: photos
+              mountPath: /data/photos
+              readOnly: true
+      volumes:
+        - name: photos
+          persistentVolumeClaim:
+            claimName: olx-photos

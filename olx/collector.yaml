@@ -1,0 +1,47 @@
+# Collection run every 3 hours (the app adds up to 15 min of random start delay).
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: olx-collector
+spec:
+  schedule: "0 */3 * * *"
+  timeZone: Europe/Lisbon
+  # Suspended until the initial bootstrap (run from the host) finishes.
+  suspend: true
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 10200
+      template:
+        spec:
+          restartPolicy: Never
+          nodeSelector:
+            homelab: "true"
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+          containers:
+            - name: collector
+              image: localhost/olx-moto
+              imagePullPolicy: Never
+              args: ["run"]
+              envFrom:
+                - secretRef:
+                    name: olx-db
+              env:
+                - name: PHOTO_DIR
+                  value: /data/photos
+              resources:
+                requests: { cpu: 100m, memory: 256Mi }
+                limits: { memory: 1Gi }
+              volumeMounts:
+                - name: photos
+                  mountPath: /data/photos
+          volumes:
+            - name: photos
+              persistentVolumeClaim:
+                claimName: olx-photos

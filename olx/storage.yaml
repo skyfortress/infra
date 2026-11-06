@@ -1,0 +1,29 @@
+# Photos live on the host disk and must survive any redeploy: static PV with Retain.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: olx-photos
+spec:
+  capacity:
+    storage: 200Gi
+  accessModes: [ReadWriteOnce]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  claimRef:
+    namespace: olx
+    name: olx-photos
+  hostPath:
+    path: /srv/olx-moto/photos
+    type: Directory
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: olx-photos
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: ""
+  volumeName: olx-photos
+  resources:
+    requests:
+      storage: 200Gi
