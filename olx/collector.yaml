@@ -6,8 +6,6 @@ metadata:
 spec:
   schedule: "0 */3 * * *"
   timeZone: Europe/Lisbon
-  # Suspended until the initial bootstrap (run from the host) finishes.
-  suspend: true
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 3600
   successfulJobsHistoryLimit: 3
