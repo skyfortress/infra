@@ -52,7 +52,7 @@ metadata:
   namespace: langy
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-route53
+    cert-manager.io/cluster-issuer: letsencrypt-cloudflare
 spec:
   ingressClassName: nginx
   rules:
@@ -69,4 +69,4 @@ spec:
   tls:
     - hosts:
         - cards.skyfortress.dev
-      secretName: letsencrypt-route53-key
+      secretName: cards-skyfortress-dev-tls
