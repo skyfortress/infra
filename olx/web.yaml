@@ -31,6 +31,10 @@ spec:
           envFrom:
             - secretRef:
                 name: olx-db
+            # REVIEW_TOKEN for the host Codex reviewer, created out of band (see olx-moto deploy/REVIEW.md).
+            - secretRef:
+                name: olx-review
+                optional: true
           env:
             - name: PHOTO_DIR
               value: /data/photos
