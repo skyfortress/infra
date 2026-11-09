@@ -10,4 +10,4 @@ resources:
 # Image is built locally and loaded into containerd by olx-moto/deploy/deploy.sh (no registry).
 images:
   - name: localhost/olx-moto
-    newTag: "57abab7"
+    newTag: "2c44e5d"
